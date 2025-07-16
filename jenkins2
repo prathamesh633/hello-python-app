@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_DIR = '/opt/nodejs-simple-web'
+        NODE_ENV = 'production'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                script {
+                    sh "rm -rf ${APP_DIR}"
+                    sh "git clone https://github.com/sonbarse17/Docker-for-DevOps.git ${APP_DIR}"
+                    sh "cd ${APP_DIR}/nodejs-simple-web"
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh """
+                        cd ${APP_DIR}/nodejs-simple-web
+                        sudo apt install npm -y
+                        npm install
+                    """
+                }
+            }
+        }
+
+        stage('Stop Old Application (if running)') {
+            steps {
+                script {
+                    sh 'pkill -f "node .*index.js" || true'
+                }
+            }
+        }
+
+        stage('Run Node.js App') {
+            steps {
+                script {
+                    sh """
+                        cd ${APP_DIR}/nodejs-simple-web
+                        npm install &
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Node.js App Deployed Successfully on Server!'
+        }
+        failure {
+            echo 'Deployment Failed!'
+        }
+    }
+}
