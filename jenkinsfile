@@ -1,36 +1,44 @@
 pipeline {
-    agent {label 'slave'}
-
-    environment {
-        VENV_DIR = "${WORKSPACE}/venv"
-    }
+    agent { label 'slave' }
+    
 
     stages {
-        stage ('code'){
+        stage('Clone Repository') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/prathamesh633/hello-python-app.git']])
-            }
-        }
-        stage('Build') {
-            steps {
-                echo 'Setting up virtual environment...'
-                sh 'sudo python3 -m venv venv'
-                sh './venv/bin/pip install --upgrade pip'
-                sh './venv/bin/pip install -r requirements.txt'
+                script {
+                    sh "rm -rf *"
+                    sh "git clone https://github.com/sonbarse17/Docker-for-DevOps.git"
+                }
             }
         }
 
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Running tests...'
-                // sh './venv/bin/pytest tests/'
+                script {
+                    sh """
+                        cd Docker-for-DevOps/nodejs-simple-web/
+                        npm install
+                    """
+                }
             }
         }
 
-        stage('Deploy') {
+        stage('Stop Old Application (if running)') {
             steps {
-                echo 'Deploying the application...'
-                sh 'nohup ./venv/bin/python app.py > app.log 2>&1 &'
+                script {
+                    sh 'pkill -f "node .*index.js" || true'
+                }
+            }
+        }
+
+        stage('Run Node.js App') {
+            steps {
+                script {
+                    sh """
+                        cd Docker-for-DevOps/nodejs-simple-web/
+                        npm start &
+                    """
+                }
             }
         }
     }
