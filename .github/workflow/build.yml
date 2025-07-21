@@ -1,0 +1,13 @@
+on: [pull_request]
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+  - name: Checkout code
+    uses: actions/checkout@v2
+
+  - name: Build
+    run: |
+      echo "Building the project..."
+      # Add your build commands here
+      python hello2.py
