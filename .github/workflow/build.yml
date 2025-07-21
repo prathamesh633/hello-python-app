@@ -1,13 +1,19 @@
-on: [pull_request]
+name: Build on Merge
+
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-  - name: Checkout code
-    uses: actions/checkout@v2
+  build:
+    runs-on: ubuntu-latest
 
-  - name: Build
-    run: |
-      echo "Building the project..."
-      # Add your build commands here
-      python hello2.py
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run a simple build step
+      run: |
+        echo "Building project..."
+        python hello.py
