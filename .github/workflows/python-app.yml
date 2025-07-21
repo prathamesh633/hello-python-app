@@ -23,5 +23,6 @@ jobs:
 
     - name: build
       run: |
-        # stop the build if there are Python syntax errors or undefined names
+        echo "Building project..."
+        ls -la
         python hello.py
