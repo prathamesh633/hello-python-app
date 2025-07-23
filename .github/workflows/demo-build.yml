@@ -1,0 +1,36 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build_1:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: list files
+        run: |
+          ls -la
+
+      - name: Display Python version
+        run: |
+          python hello.py
+  
+  build_2:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: list files
+        run: |
+          ls -la
+
+      - name: Display Python version
+        run: |
+          python hello2.py
