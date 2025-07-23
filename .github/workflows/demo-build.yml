@@ -20,6 +20,6 @@ jobs:
     needs: build_2
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - uses: actions/checkout@v4
+      -  run: |
           python hello.py
-  
