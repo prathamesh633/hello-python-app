@@ -5,33 +5,21 @@ on:
 
 jobs:
   build_1:
-
     runs-on: ubuntu-latest
-
     steps:
-      - name: Code Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: list files
-        run: |
+  build_2:
+    runs-on: ubuntu-latest
+    needs: build_1
+    steps:  
+      - run: |
           ls -la
-
-      - name: Display Python version
-        run: |
+  
+  build_3:
+    needs: build_2
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
           python hello.py
   
-  build_2:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Code Checkout
-        uses: actions/checkout@v4
-
-      - name: list files
-        run: |
-          ls -la
-
-      - name: Display Python version
-        run: |
-          python hello2.py
